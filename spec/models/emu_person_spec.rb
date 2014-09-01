@@ -77,6 +77,24 @@ describe EmuPerson do
       end
 
     end
+
+    context "#records_by_percentile" do
+      it "reports no data when there are no records" do
+        EmuPerson.ntile.should == []
+      end
+      context "with data" do
+        before do
+          100.times do |num|
+            FactoryGirl.create(:emu_person, :count => num)
+          end
+        end
+        it "reports top 10% of records" do
+          result = EmuPerson.ntile
+          expect(result.length).to eq(10)
+        end
+      end
+    end
+
   end
 
 

@@ -28,9 +28,10 @@ class EmuPerson < ActiveRecord::Base
   #{"ntile"=>"9", "avg"=>"23.2147188533627343", "max"=>"42", "min"=>"13", "total"=>"84223"}
   #{"ntile"=>"10", "avg"=>"416.7130650496141125", "max"=>"24979", "min"=>"42", "total"=>"1511835"}
 
-  def self.frequency_by_percent(segment = DEFAULT_PERCENTILE)
-    segment = segment.to_i
-    segment = DEFAULT_PERCENTILE if segment <= 0
+  def self.frequency_by_percent(percentile = DEFAULT_PERCENTILE)
+    percentile = percentile.to_i
+    percentile = DEFAULT_PERCENTILE if percentile <= 0
+    segment = 100/percentile
 
     result = EmuPerson.connection.execute("SELECT ntile, ntile * 100/#{segment} as perc,
                       avg(count) AS avg, max(count) AS max, min(count) AS min, sum(count) AS total

@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Count:</strong>
+  <%= @emu_person.count %>
+</p>
+
+<p>
+  <strong>Irn:</strong>
+  <%= @emu_person.irn %>
+</p>
+
+<p>
+  <strong>Full name:</strong>
+  <%= @emu_person.full_name %>
+</p>
+
+<p>
+  <strong>Brief name:</strong>
+  <%= @emu_person.brief_name %>
+</p>
+
+<p>
+  <strong>Birth date:</strong>
+  <%= @emu_person.birth_date %>
+</p>
+
+<p>
+  <strong>Death date:</strong>
+  <%= @emu_person.death_date %>
+</p>
+
+<p>
+  <strong>Bio location:</strong>
+  <%= @emu_person.bio_location %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @emu_person.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @emu_person.end_date %>
+</p>
+
+<%= link_to 'Edit', edit_emu_person_path(@emu_person) %> |
+<%= link_to 'Back', emu_people_path %>

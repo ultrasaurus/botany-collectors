@@ -1,0 +1,43 @@
+<h1>Listing emu_people</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Count</th>
+      <th>Irn</th>
+      <th>Full name</th>
+      <th>Brief name</th>
+      <th>Birth date</th>
+      <th>Death date</th>
+      <th>Bio location</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @emu_people.each do |emu_person| %>
+      <tr>
+        <td><%= emu_person.count %></td>
+        <td><%= emu_person.irn %></td>
+        <td><%= emu_person.full_name %></td>
+        <td><%= emu_person.brief_name %></td>
+        <td><%= emu_person.birth_date %></td>
+        <td><%= emu_person.death_date %></td>
+        <td><%= emu_person.bio_location %></td>
+        <td><%= emu_person.start_date %></td>
+        <td><%= emu_person.end_date %></td>
+        <td><%= link_to 'Show', emu_person %></td>
+        <td><%= link_to 'Edit', edit_emu_person_path(emu_person) %></td>
+        <td><%= link_to 'Destroy', emu_person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Emu person', new_emu_person_path %>

@@ -1,0 +1,196 @@
+<% content_for :head do %>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/queue.v1.min.js"></script>
+
+  <style>
+    svg {
+      display: inline;
+    }
+    .chart rect {
+      fill: steelblue;
+    }
+
+    .chart text {
+      font: 10px sans-serif;
+      text-anchor: end;
+    }
+
+    .axis text {
+      font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+  </style>
+
+  <script>
+    var gData = null;
+    var margin = {top: 20, right: 30, bottom: 60, left: 60},
+      width = 500 - margin.left - margin.right,
+      height = 200 - margin.top - margin.bottom;
+
+    function Chart(data, segment_width, init_func) {
+      self = this;
+      this.x = null;
+      this.y = null;
+      this.x_attr = "x";
+      this.y_attr = "y";
+      this.x_label = null;
+      this.y_label = null;
+      this.x_ticks = 10;
+      this.y_ticks = 10;
+
+      if (init_func != undefined) init_func(this);
+
+      var svg = d3.select("body").append("svg")
+        .attr("class", "chart")
+        .attr("width", width)
+        .attr("height", height);
+
+      // this.node references the inner node (not including margin)
+      this.node = svg
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+     if (this.x_label == null) this.x_label = this.x_attr;
+     if (this.y_label == null) this.y_label = this.y_attr;
+
+     if (this.x == null) this.x = d3.scale.linear()
+       .domain([0,  d3.max(data, function(d) { return d.segment + segment_width })])
+       .range([0, width]);
+
+      if (this.y == null) this.y = d3.scale.linear()
+        .domain([0, d3.max(data, function(d) { return d[self.y_attr] }) ])
+        .range([height, 0]);
+
+      this.barWidth = this.x(segment_width);   // segment size
+
+      var self = this;
+
+      var xAxis = d3.svg.axis()
+        .scale(this.x)
+        .ticks(this.x_ticks)
+        .orient("bottom");
+
+      var yAxis = d3.svg.axis()
+        .scale(this.y)
+        .ticks(this.y_ticks)
+        .orient("left");
+
+      this.node.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+
+      this.node.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+      // x-axis label
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom - 15)
+        .attr("dy", ".71em")
+        .style("text-anchor", "start")
+        .text(this.x_label);
+
+      // y-axis label
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -30)
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text(this.y_label);
+
+
+      this.node.selectAll("rect")
+        .data(data)
+        .enter().append("rect")
+        .attr('class', 'chart')
+        .attr('height', function(d) { return height - self.y(d[self.y_attr]) })
+        .attr('width', self.barWidth)
+        .attr('x', function(d) { return self.x(d[self.x_attr]) - self.barWidth })
+        .attr('y', function(d) { return  self.y(d[self.y_attr]) } )
+
+    }
+
+    queue()
+      .defer(d3.json, "/emu_people/frequency_data?segment=1")
+      .defer(d3.json, "/emu_people/frequency_by_percent")
+      .await(ready);
+
+
+    function ready(error, data_segment_1, data_by_percent) {
+      gData = data_by_percent; // for debugging
+
+      if (error) return console.log("there was an error loading the data: " + error);
+      body = d3.select('body');
+
+      body.append('h2').text('Average # of Specimens by Percentile of Collectors')
+      body.append('p').text("Right-most bar is the average specimen count for the top 10% of collectors by specimen count")
+
+      perc_chart = new Chart(data_by_percent,10, function(chart) {
+        chart.x = d3.scale.linear()
+          .domain([0,  100])
+          .range([0, width]);
+
+        chart.x_attr = "perc";
+        chart.y_attr = "avg";
+
+        chart.x_label = "Percentile of Collectors";
+        chart.y_label = "Number of Specimens";
+
+
+      })
+
+       body.append('h2').text('Frequency of Collectors by # Specimens')
+       body.append('p').text('Initial analysis of collectors by number of specimens illustrated that a large number of collectors with very few specimens.  14559 collectors have a record of a single specimen, and numbers rapidly decline (as seen in graph on the right, zoomed in we can see that there are only 2604 collectors with 3 specimen records).  Our area of interest is actually the far right of this graph (cropped) where the most active collector has 24979 specimens.')
+
+      chart1 = new Chart(data_segment_1, 1, function(chart) {
+        chart.x = d3.scale.linear()
+          .domain([0,  1000])
+          .range([0, width]);
+        chart.x_attr = "segment";
+        chart.y_attr = "count";
+        chart.x_label = "Number of Specimens";
+        chart.y_label = "Number of Collectors";
+        this.x_ticks = 20;
+
+
+      });
+
+      chart2 = new Chart(data_segment_1, 1, function(chart) {
+          chart.x = d3.scale.linear()
+            .domain([0,  100])
+            .range([0, width]);
+
+          chart.y = d3.scale.linear()
+            .domain([0, 3000])
+            .range([height, 0]);
+
+        chart.x_attr = "segment";
+        chart.y_attr = "count";
+        chart.x_label = "Number of Specimens";
+        chart.y_label = "Number of Collectors";
+        this.x_ticks = 20;
+
+      })
+
+
+    }
+  </script>
+<% end %>
+
+<h1>Botany Collector Data</h1>
+Of 58,185 people and organizations in the collections database, there are 36,283 who have one or more associated specimens.
+The graphs below show how many collectors each have a specific number of collected specimens.  Note that there are millions
+of specimens that have no digital representation, so this is not intended to represent the work of any particular scientist, but
+instead to explore the data we have and perhaps identify where best to focus our efforts in determining which scientists might
+be connected to other digital assets.

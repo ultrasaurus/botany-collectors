@@ -1,0 +1,53 @@
+<%= form_for(@emu_person) do |f| %>
+  <% if @emu_person.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@emu_person.errors.count, "error") %> prohibited this emu_person from being saved:</h2>
+
+      <ul>
+      <% @emu_person.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :count %><br>
+    <%= f.number_field :count %>
+  </div>
+  <div class="field">
+    <%= f.label :irn %><br>
+    <%= f.number_field :irn %>
+  </div>
+  <div class="field">
+    <%= f.label :full_name %><br>
+    <%= f.text_field :full_name %>
+  </div>
+  <div class="field">
+    <%= f.label :brief_name %><br>
+    <%= f.text_field :brief_name %>
+  </div>
+  <div class="field">
+    <%= f.label :birth_date %><br>
+    <%= f.text_field :birth_date %>
+  </div>
+  <div class="field">
+    <%= f.label :death_date %><br>
+    <%= f.text_field :death_date %>
+  </div>
+  <div class="field">
+    <%= f.label :bio_location %><br>
+    <%= f.text_field :bio_location %>
+  </div>
+  <div class="field">
+    <%= f.label :start_date %><br>
+    <%= f.text_field :start_date %>
+  </div>
+  <div class="field">
+    <%= f.label :end_date %><br>
+    <%= f.text_field :end_date %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

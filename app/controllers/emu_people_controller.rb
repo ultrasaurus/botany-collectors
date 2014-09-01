@@ -16,7 +16,7 @@ class EmuPeopleController < ApplicationController
   # GET /emu_people
   # GET /emu_people.json
   def index
-    @emu_people = EmuPerson.all
+    @emu_people = EmuPerson.page(params[:page]).per(100)
   end
 
   # GET /emu_people/1

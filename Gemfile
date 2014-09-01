@@ -32,6 +32,8 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+gem 'kaminari'
+
 group :development, :test do
   gem "launchy"
   gem "rspec-rails"

@@ -16,7 +16,13 @@ class EmuPeopleController < ApplicationController
   # GET /emu_people
   # GET /emu_people.json
   def index
-    @emu_people = EmuPerson.page(params[:page]).per(100)
+    respond_to do |format|
+      format.html { @emu_people = EmuPerson.page(params[:page]).per(100) }
+      format.csv do
+        @emu_people = EmuPerson.all
+      end
+    end
+
   end
 
   # GET /emu_people/1

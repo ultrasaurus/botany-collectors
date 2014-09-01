@@ -1,0 +1,7 @@
+<%= attrs = %w[count irn full_name brief_name]
+    attrs.join(',') %>
+<% @emu_people.each do |person| -%>
+    <% row =  attrs.map { |attr| person[attr].to_s.include?(',') ? '"' + person[attr] + '"' : person[attr]}
+       row = row.join(',') -%>
+    <%= row.html_safe %>
+<% end -%>

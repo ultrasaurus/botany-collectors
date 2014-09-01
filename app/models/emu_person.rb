@@ -49,14 +49,15 @@ class EmuPerson < ActiveRecord::Base
     data
   end
 
-  def self.ntile
-    percentile = DEFAULT_PERCENTILE
+  def self.ntile(percentile = DEFAULT_PERCENTILE)
+    percentile = percentile.to_i
+    percentile = DEFAULT_PERCENTILE if percentile <= 0
     segment = 100/percentile
 
     # reports the ntile in the result
     # result = EmuPerson.connection.execute("SELECT *, ntile(10) OVER (ORDER BY count) FROM emu_people")
     result = EmuPerson.connection.execute("WITH SlicedData AS
-                                          (SELECT *, ntile(#{segment}) OVER (ORDER BY count) FROM emu_people)
+                                          (SELECT *, ntile(#{segment}) OVER (ORDER BY count DESC) FROM emu_people)
                                             SELECT *
                                             FROM SlicedData
                                             WHERE NTile=1")

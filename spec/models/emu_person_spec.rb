@@ -88,9 +88,15 @@ describe EmuPerson do
             FactoryGirl.create(:emu_person, :count => num)
           end
         end
-        it "reports top 10% of records" do
+        it "reports top 10% of records by default" do
           result = EmuPerson.ntile
           expect(result.length).to eq(10)
+        end
+        it "reports top 5% of records with argument 5" do
+          result = EmuPerson.ntile(5)
+          expect(result.length).to eq(5)
+          top_result = EmuPerson.first
+          expect(result.first).to include(full_name: top_result.full_name)
         end
       end
     end

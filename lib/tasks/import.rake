@@ -1,9 +1,10 @@
 require 'csv'
 
 namespace :import do
-  desc "import file: data/collectors.txt"
+  filename = 'data/collectors.csv'
+  desc "import file: #{filename}"
   task collectors: :environment do
-    path = "#{Rails.root}/data/collectors.txt"
+    path = "#{Rails.root}/#{filename}"
     puts "reading file: #{path}"
 
     mapping = {
@@ -19,7 +20,7 @@ namespace :import do
       }
     # note: eMu format is latin1
     
-   File.foreach(path).with_index do |line, line_num|
+    File.foreach(path).with_index do |line, line_num|
      next if line_num == 0  # skip header
      begin
         data = []
@@ -36,9 +37,11 @@ namespace :import do
           attrs[key] = data[index];
         end
         EmuPerson.create!(attrs)
+        print '.' if line_num % 100 == 0
     rescue Exception => e 
       puts "\nException on line #{line_num}: #{e.message}"
+     end
     end
-  end
+    puts "\nimported #{EmuPerson.count}"
   end
 end

@@ -37,6 +37,37 @@ describe EmuPerson do
       end
     end
   end
+  context "#frequency_by_percent" do
+    it "reports no data when there are no records" do
+      EmuPerson.frequency_by_percent.should == []
+    end
+    context "when there are some records" do
+      before do
+        100.times do |num|
+          FactoryGirl.create(:emu_person, :count => num)
+        end
+      end
+      let :expected_10 do
+        expected = []
+        (1..10).each do |num|
+          start = (num-1)*10
+          sum = (start..(start+9)).inject(:+)
+          sum = sum.to_f
+          num = num.to_f
+          expected << HashWithIndifferentAccess.new({ntile:num, perc:num*10, avg:(sum/10), max:start+9, min:start, total:sum})
+        end
+        expected
+      end
+      it "reports data with default percentile=10" do
+        EmuPerson.frequency_by_percent.should == expected_10
+      end
+
+      it "handles nil gracefully" do
+        EmuPerson.frequency_by_percent(nil).should == expected_10
+      end
+
+    end
+  end
 
 
 end

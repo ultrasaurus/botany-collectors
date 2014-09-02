@@ -3,8 +3,8 @@
 <table>
   <thead>
     <tr>
-      <th>Edan</th>
-      <th>Image uri</th>
+      <th>Edan ID</th>
+      <th>Collector</th>
       <th>Description</th>
       <th>Type</th>
       <th></th>
@@ -17,7 +17,7 @@
     <% @records.each do |record| %>
       <tr>
         <td><%= record.edan_id %></td>
-        <td><%= record.image_uri %></td>
+        <td><%= record.emu_person.blank? ? "invalid" : record.emu_person.full_name %></td>
         <td><%= record.description %></td>
         <td><%= record.object_type %></td>
         <td><%= link_to 'Show', record %></td>

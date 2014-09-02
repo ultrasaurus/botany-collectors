@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe EmuPerson do
+  it { should have_many :records }
+
   context "with some attributes" do
     let (:person) { FactoryGirl.create(:emu_person) }
     it "is a a valid person" do

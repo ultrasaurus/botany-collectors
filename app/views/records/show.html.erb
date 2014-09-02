@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Edan:</strong>
+  <%= @record.edan_id %>
+</p>
+
+<p>
+  <strong>Image uri:</strong>
+  <%= @record.image_uri %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @record.description %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @record.type %>
+</p>
+
+<%= link_to 'Edit', edit_record_path(@record) %> |
+<%= link_to 'Back', records_path %>

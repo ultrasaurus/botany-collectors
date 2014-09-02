@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140128214430) do
+ActiveRecord::Schema.define(version: 20140902011157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 20140128214430) do
     t.string   "bio_location"
     t.string   "start_date"
     t.string   "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "records", force: true do |t|
+    t.string   "edan_id"
+    t.string   "image_uri"
+    t.text     "description"
+    t.string   "type"
+    t.integer  "emu_person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

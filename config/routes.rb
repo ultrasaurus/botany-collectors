@@ -1,5 +1,8 @@
 Collectors::Application.routes.draw do
+  resources :records
+
   resources :emu_people, only: [:index, :show] do
+    resources :records
     collection do
       get :frequency_data
       get :frequency_by_percent

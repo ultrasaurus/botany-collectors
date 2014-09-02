@@ -2,6 +2,8 @@ class EmuPerson < ActiveRecord::Base
   DEFAULT_SEGMENT = 50
   DEFAULT_PERCENTILE = 10
 
+  has_many :records
+
   def self.frequency_data(segment = DEFAULT_SEGMENT)
     segment = segment.to_i
     segment = DEFAULT_SEGMENT if segment <= 0

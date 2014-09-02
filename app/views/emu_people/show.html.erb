@@ -1,3 +1,5 @@
+<%= link_to 'Back', emu_people_path %>
+
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -20,29 +22,18 @@
   <%= @emu_person.brief_name %>
 </p>
 
-<p>
-  <strong>Birth date:</strong>
-  <%= @emu_person.birth_date %>
-</p>
+<% @emu_person.records.each do |record| %>
+    <tr>
+      <td><%= record.edan_id %></td>
+      <td><%= record.image_uri %></td>
+      <td><%= record.description %></td>
+      <td><%= link_to 'Edit', edit_emu_person_record_path(@emu_person, record) %></td>
+      <td><%= link_to 'Destroy', record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+<% end %>
 
-<p>
-  <strong>Death date:</strong>
-  <%= @emu_person.death_date %>
-</p>
+<p><%= link_to 'Add Record', new_emu_person_record_path(@emu_person) %></p>
 
-<p>
-  <strong>Bio location:</strong>
-  <%= @emu_person.bio_location %>
-</p>
 
-<p>
-  <strong>Start date:</strong>
-  <%= @emu_person.start_date %>
-</p>
 
-<p>
-  <strong>End date:</strong>
-  <%= @emu_person.end_date %>
-</p>
 
-<%= link_to 'Back', emu_people_path %>

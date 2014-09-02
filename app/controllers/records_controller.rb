@@ -14,7 +14,8 @@ class RecordsController < ApplicationController
 
   # GET /records/new
   def new
-    @record = Record.new
+    @emu_person = EmuPerson.find params[:emu_person_id]
+    @record = Record.new(emu_person: @emu_person)
   end
 
   # GET /records/1/edit
@@ -24,15 +25,14 @@ class RecordsController < ApplicationController
   # POST /records
   # POST /records.json
   def create
-    @record = Record.new(record_params)
+    @emu_person = EmuPerson.find params[:emu_person_id]
+    @emu_person.records.build(record_params)
 
     respond_to do |format|
-      if @record.save
-        format.html { redirect_to @record, notice: 'Record was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @record }
+      if @emu_person.save
+        format.html { redirect_to @emu_person, notice: 'Record was successfully created.' }
       else
         format.html { render action: 'new' }
-        format.json { render json: @record.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -43,10 +43,8 @@ class RecordsController < ApplicationController
     respond_to do |format|
       if @record.update(record_params)
         format.html { redirect_to @record, notice: 'Record was successfully updated.' }
-        format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @record.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -1,5 +1,5 @@
 Collectors::Application.routes.draw do
-  resources :records
+  resources :records, only: [:index, :show]
 
   resources :emu_people, only: [:index, :show] do
     resources :records

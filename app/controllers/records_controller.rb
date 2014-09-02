@@ -46,7 +46,7 @@ class RecordsController < ApplicationController
     # {"edan_id":"nmnhbotany_2576760","thumbnail":"http://collections.nmnh.si.edu/search/botany/search.php?irn=10334544\u0026action=11\u0026qtab=0\u0026thumb=yes","title":"Vanilla pompona Schiede"}
     require 'httpclient'
     http = HTTPClient.new
-    response  = http.get("http://temp-sample-data.herokuapp.com/objects/#{record_params[:edan_id]}.json")
+    response  = http.get("#{Record.SOURCE_URL}#{record_params[:edan_id]}.json")
     result = JSON.parse(response.content)
     puts result['thumbnail']
     puts result['title']

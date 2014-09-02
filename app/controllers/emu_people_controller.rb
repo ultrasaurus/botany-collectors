@@ -20,9 +20,8 @@ class EmuPeopleController < ApplicationController
       format.html { @emu_people = EmuPerson.page(params[:page]).per(100) }
       format.csv do
         if params[:ntile]
-          puts "ntile = #{params[:ntile]}, total = #{EmuPerson.count}"
+          #puts "ntile = #{params[:ntile]}, total = #{EmuPerson.count}"
           @emu_people = EmuPerson.ntile(params[:ntile])
-          puts @emu_people.inspect
         else
           @emu_people = EmuPerson.all
         end

@@ -24,9 +24,7 @@
 
 <% @emu_person.records.each do |record| %>
     <tr>
-      <td><%= record.edan_id %></td>
-      <td><%= record.image_uri %></td>
-      <td><%= record.description %></td>
+      <td><%= link_to record.description, record  %></td>
       <td><%= link_to 'Edit', edit_emu_person_record_path(@emu_person, record) %></td>
       <td><%= link_to 'Destroy', record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>

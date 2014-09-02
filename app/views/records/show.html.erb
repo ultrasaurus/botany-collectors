@@ -1,24 +1,19 @@
 <p id="notice"><%= notice %></p>
+Collected by: <%= link_to @record.emu_person.full_name, emu_person_path(@record.emu_person) %>
 
 <p>
-  <strong>Edan:</strong>
-  <%= @record.edan_id %>
+  <strong>Full record:</strong>
+  <%= link_to @record.edan_id, @record.object_url, target: "_blank" %>
 </p>
 
-<p>
-  <strong>Image uri:</strong>
-  <%= @record.image_uri %>
-</p>
+<%= image_tag @record.image_uri %>
 
 <p>
-  <strong>Description:</strong>
   <%= @record.description %>
 </p>
 
 <p>
-  <strong>Type:</strong>
   <%= @record.object_type %>
 </p>
 
 <td><%= link_to 'Edit', edit_emu_person_record_path(@record.emu_person, @record) %></td>
-<%= link_to 'Back', records_path %>

@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20140902011157) do
     t.string   "edan_id"
     t.string   "image_uri"
     t.text     "description"
-    t.string   "type"
+    t.string   "object_type"
     t.integer  "emu_person_id"
     t.datetime "created_at"
     t.datetime "updated_at"

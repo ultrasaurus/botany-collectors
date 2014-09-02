@@ -22,8 +22,7 @@ class RecordsController < ApplicationController
   def edit
   end
 
-  # POST /records
-  # POST /records.json
+  # POST /emu_person/:emu_person_id/records/:record_id
   def create
     @emu_person = EmuPerson.find params[:emu_person_id]
     @emu_person.records.build(record_params)
@@ -40,8 +39,25 @@ class RecordsController < ApplicationController
   # PATCH/PUT /records/1
   # PATCH/PUT /records/1.json
   def update
+    @record = Record.find params[:id]
+
+    puts "====================== update"
+    # http://temp-sample-data.herokuapp.com/objects/nmnhbotany_2576760.json
+    # {"edan_id":"nmnhbotany_2576760","thumbnail":"http://collections.nmnh.si.edu/search/botany/search.php?irn=10334544\u0026action=11\u0026qtab=0\u0026thumb=yes","title":"Vanilla pompona Schiede"}
+    require 'httpclient'
+    http = HTTPClient.new
+    response  = http.get("http://temp-sample-data.herokuapp.com/objects/#{record_params[:edan_id]}.json")
+    result = JSON.parse(response.content)
+    puts result['thumbnail']
+    puts result['title']
+    puts result.inspect
+    new_params = record_params
+    new_params['image_uri'] = result['thumbnail']
+    new_params['description'] = result['title']
+    puts "== new_params =="
+    puts new_params.inspect
     respond_to do |format|
-      if @record.update(record_params)
+      if @record.update(new_params)
         format.html { redirect_to @record, notice: 'Record was successfully updated.' }
       else
         format.html { render action: 'edit' }
@@ -67,6 +83,6 @@ class RecordsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def record_params
-      params.require(:record).permit(:edan_id, :image_uri, :description, :type)
+      params.require(:record).permit(:edan_id, :image_uri, :description, :object_type)
     end
 end

@@ -4,7 +4,7 @@ class CreateRecords < ActiveRecord::Migration
       t.string :edan_id
       t.string :image_uri
       t.text :description
-      t.string :type
+      t.string :object_type
       t.references :emu_person
 
       t.timestamps
